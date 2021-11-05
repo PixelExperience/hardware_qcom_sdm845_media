@@ -27,7 +27,7 @@ TARGETS_THAT_HAVE_VENUS_HEVC := apq8084 msm8994 msm8996
 TARGETS_THAT_SUPPORT_UBWC := msm8996 msm8953 msm8998 sdm660 sdm845 msmpeafowl sdm710 qcs605
 TARGETS_THAT_NEED_SW_VDEC := msm8937 sdm845 msmpeafowl sdm710 qcs605
 
-ifeq ($(call is-board-platform-in-list, $(TARGETS_THAT_HAVE_VENUS_HEVC)),true)
+ifneq (,$(call is-board-platform-in-list2, $(TARGETS_THAT_HAVE_VENUS_HEVC)))
 libmm-vdec-def += -DVENUS_HEVC
 endif
 
@@ -35,7 +35,7 @@ ifeq ($(TARGET_BOARD_PLATFORM),msm8610)
 libmm-vdec-def += -DSMOOTH_STREAMING_DISABLED
 endif
 
-ifeq ($(call is-board-platform-in-list, $(TARGETS_THAT_SUPPORT_UBWC)),true)
+ifneq (,$(call is-board-platform-in-list2, $(TARGETS_THAT_SUPPORT_UBWC)))
 libmm-vdec-def += -D_UBWC_
 endif
 
@@ -47,7 +47,7 @@ ifneq (1,$(filter 1,$(shell echo "$$(( $(PLATFORM_SDK_VERSION) >= 18 ))" )))
 libmm-vdec-def += -DANDROID_JELLYBEAN_MR1=1
 endif
 
-ifeq ($(call is-board-platform-in-list, $(MASTER_SIDE_CP_TARGET_LIST)),true)
+ifneq (,$(call is-board-platform-in-list2, $(MASTER_SIDE_CP_TARGET_LIST)))
 libmm-vdec-def += -DMASTER_SIDE_CP
 endif
 
@@ -134,7 +134,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 ifneq "$(wildcard $(QCPATH) )" ""
-ifeq ($(call is-board-platform-in-list, $(TARGETS_THAT_NEED_SW_VDEC)),true)
+ifneq (,$(call is-board-platform-in-list2, $(TARGETS_THAT_NEED_SW_VDEC)))
 
 LOCAL_MODULE                  := libOmxSwVdec
 LOCAL_LICENSE_KINDS           := SPDX-license-identifier-BSD
